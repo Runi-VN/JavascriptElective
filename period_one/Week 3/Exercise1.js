@@ -92,3 +92,28 @@ c) Refactor your solution into a module and export it
 */
 
 //see SecureRandomModule.js
+
+require('crypto').randomBytes(48, function(err, buffer) {
+	let secureHex = buffer.toString('hex');
+	console.log(secureHex); //Add to object instead as requested
+	require('crypto').randomBytes(40, function(err, buffer) {
+		let secureHex = buffer.toString('hex');
+		console.log(secureHex); //Add to object instead as requested
+		require('crypto').randomBytes(32, function(err, buffer) {
+			let secureHex = buffer.toString('hex');
+			console.log(secureHex); //Add to object instead as requested
+			require('crypto').randomBytes(24, function(err, buffer) {
+				let secureHex = buffer.toString('hex');
+				console.log(secureHex); //Add to object instead as requested
+				require('crypto').randomBytes(16, function(err, buffer) {
+					let secureHex = buffer.toString('hex');
+					console.log(secureHex); //Add to object instead as requested
+					require('crypto').randomBytes(8, function(err, buffer) {
+						let secureHex = buffer.toString('hex');
+						console.log(secureHex); //Add to object instead as requested
+					});
+				});
+			});
+		});
+	});
+});
