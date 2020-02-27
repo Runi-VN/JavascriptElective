@@ -1,0 +1,11 @@
+{
+	//Removed everything else for brevity
+	"compilerOptions": {
+		"target": "es6",
+		"strict": true,
+		"module": "commonjs",
+		"outDir": "build",
+		"sourceMap": true
+	},
+	"include": ["src/**/*"]
+}
