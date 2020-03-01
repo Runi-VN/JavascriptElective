@@ -48,7 +48,7 @@ It has great scalability and in conjunction with npm the possibilties are endles
 -   ```Explain about the Event Loop in JavaScript, including terms like: blocking, non-blocking, event loop, callback que and "other" API's. Make sure to include why this is relevant for us as developers.```
 <img src="eventloop.gif" height="400" width="750">  
 
-([Video](https://youtu.be/8aGhZQkoFbQ) | [.mp4 of gif](https://i.imgur.com/QayP3Nm.mp4))  
+([Video](https://youtu.be/8aGhZQkoFbQ) | [.mp4 of gif](https://i.imgur.com/QayP3Nm.mp4) | [Source](http://latentflip.com/loupe/))  
 The stack is only occupied by the call to the other API, and can then continue until the stack is empty, then checking the task queue for the callback.
 
 Javascript is single-threaded and therefore you usually see a lot of blocking in your code.  
@@ -100,16 +100,116 @@ For an **arrow function**, `this` represents the owner of the function. (Often b
 ([Source](https://www.w3schools.com/js/js_arrow_function.asp))
 
     
--   ```Function Closures and the JavaScript Module Pattern```
+-   ```Function Closures and the JavaScript Module Pattern```  
+**Function closures** are used to keep something as *private* as Javascript allows it to. It allows us to access a certain scope despite it technically being *closed*.  
+Examples: https://stackoverflow.com/a/39045098  
+Returning a method that accesses a 'private' variable, updating it, and then doing what you want, is a way to implement inner-function variables that you cannot simply access by writing `func.variable`.  
+
+The **Module Pattern** is also about *privacy*. A great example from [here](https://ultimatecourses.com/blog/mastering-the-module-pattern) shows the *reavealing module pattern*:  
+```js
+var Module = (function () {
+
+  var privateMethod = function () {
+    // private
+  };
+
+  var someMethod = function () {
+    // public, can access privateMethod
+  };
+
+  var anotherMethod = function () {
+    // public, can access privateMethod
+  };
+
+  return {
+    someMethod: someMethod,
+    anotherMethod: anotherMethod
+  };
+
+})();
+```  
+
+We would access it by using the IIFE (Ensure function is executed imemediately and variables are only within scope), either `Module.someMethod();` or `Module.anotherMethod();` but could not access *privateMethod*.
     
--   ```User-defined Callback Functions (writing your own functions that take a callback)```
+-   ```User-defined Callback Functions (writing your own functions that take a callback)```  
+There are several uses for callbacks.  
+If we have several usecases with the same parameters, we can make it easier and cleaner by using callbacks.  
+By example, a calculator:  
+```js
+function multiply(val1, val2) {
+  return val1 * val2;
+}
+
+function substract(val1, val2) {
+  return val1 - val2;
+}
+
+function calculator(val1, val2, callback) {
+  return callback(val1, val2)
+}
+
+let multiply_example = calculator(2, 2, multiply);
+let substraction_example = calculator(10, 2, substract);
+console.log(multiply_example); //4
+console.log(substraction_example); //8
+```
+Both methods take use of `calculator()` but they provide different results depending on the provided callback
     
--   ```Explain the methods map, filter  and reduce```
+-   ```Explain the methods map, filter and reduce```  
+All are methods on Array:  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce  
+
+`Map()` creates a new array with the results of using a provided function on every element of the original array.  
+```js
+const testData = [2, 4, 6, 8];
+
+const result = testData.map(element => element * 2);
+
+console.log(result); //[4, 8, 12, 16]
+```  
+
+In the example we take the power of two to every element.
+
+`Filter()` creates a new array with the elements of the original array that passes a test.  
+```js
+const testData = ["Hej", "Med", "Dig", "Harald"];
+
+const result = testData.filter(word => word.startsWith("H"));
+
+console.log(result); //["Hej", "Harald"]
+```  
+In this example we are only interested in the words starting with **H**.
+
+`Reduce()` applies a special *reducer*-function to every element and returns a single value result.
+```js
+const testData = [25,50,75,100];
+
+const result = testData.reduce((total, current) => total + current);
+
+console.log(result); //25 + 50 + 75 + 100 = 250
+```  
+In this example we add every value to the accumulator and finally return it.  
+It is worth noting that reduce takes 4 parameters (acc, cur, idx, array).
     
--   ```Provide examples of user-defined reusable modules implemented in Node.js (learnynode - 6)```
-    
+-   ```Provide examples of user-defined reusable modules implemented in Node.js (learnynode - 6)```  
+https://github.com/Runi-VN/JavascriptElective/tree/master/period_one/ClassExercises_Learnyounode/make-it-modular  
+(Re-write)  
 -   ```Provide examples and explain the es2015 features: let, arrow functions, this, rest parameters, destructuring objects and arrays, maps/sets etc.```
-    
+
+`let` is block scoped:
+
+`arrow functions` are...
+
+`this` is...
+
+`rest parameters` are...
+
+`destructuring objects, arrays, maps, sets`  is...
+
+
+
 -   ```Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.```
     
 -   ```Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events```
