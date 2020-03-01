@@ -80,9 +80,25 @@ These tools use several dependencies and loaders that are all downloaded through
 
 ## Explain using sufficient code examples the following features in JavaScript (and node) STILL BEING WRITTEN
 
--   ```Variable/function-Hoisting```
+-   ```Variable/function-Hoisting```  
+https://developer.mozilla.org/en-US/docs/Glossary/Hoisting  
+
+Hoisting means that all declarations are moved to the top of their scope. Both variables and functions.  
+Assignments are not hoisted.  
+It is adviced to keep variable declarations **and their assignments** together, preferably at the top of their scope.
+`let` and `const` are hoisted to their block scope, meaning they are not available outside their block. `var` is always hoisted, therefore available.
+
     
--   ```this in JavaScript and how it differs from what we know from Java/.net.```
+-   ```this in JavaScript and how it differs from what we know from Java/.net.```  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this  
+
+**In Java**, `this` refers to the current object that is tied to the method. ([Source](https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html))  
+**In Javascript**, `this` changes depending on where it is used and also if `strict` mode is applied.  
+![](https://i.imgur.com/06Ek8zz.png)  
+For *arrow functions* it is a bit different. Compare it to a normal function, where `this` represents the object that calls the function.  
+For an **arrow function**, `this` represents the owner of the function. (Often being the window object - or global in node.js)  
+([Source](https://www.w3schools.com/js/js_arrow_function.asp))
+
     
 -   ```Function Closures and the JavaScript Module Pattern```
     
