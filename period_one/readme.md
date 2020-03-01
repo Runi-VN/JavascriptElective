@@ -45,7 +45,7 @@ It has great scalability and in conjunction with npm the possibilties are endles
 
 **npm** (Node Package Manager) handles packages (also "modules") of code shared between developers. Much like libraries and frameworks, utilities that are often-needed can be accessed and save valuable time, increase performance and much more. See: lodash, react, request, express, uuid.
     
--   Explain about the Event Loop in JavaScript, including terms like: blocking, non-blocking, event loop, callback que and "other" API's. Make sure to include why this is relevant for us as developers.
+-   ```Explain about the Event Loop in JavaScript, including terms like: blocking, non-blocking, event loop, callback que and "other" API's. Make sure to include why this is relevant for us as developers.```
 <img src="eventloop.gif" height="400" width="750">  
 
 ([Video](https://youtu.be/8aGhZQkoFbQ) | [.mp4 of gif](https://i.imgur.com/QayP3Nm.mp4))  
@@ -56,7 +56,7 @@ The way to handle this is by delegating the blocking code to other APIs.
 
 If the code requires a lot of work done, you can reduce the time it takes by initializing it, delegating it, and then providing it as it is ready. The alternative is to start work on one task, wait til completion, and then begin the next. The way node.js handles callbacks and asynchronous actions reduced loadtime for Netflix by 70%.
     
--   Explain the terms JavaScript Engine (name at least one) and JavaScript Runtime Environment (name at least two)  
+-   ```Explain the terms JavaScript Engine (name at least one) and JavaScript Runtime Environment (name at least two)```  
 
 **Javascript Engine** is the program that executes the code. Engines started out as simple interpreters, executing code line-by-line.  
 Modern engines has Just-In-Time compilation (JIT) which compiles parts of the program where optimization can be found during runtime, opposite of compiling code before runtime. It is generally faster overall, despite a slight startup delay.  
@@ -70,7 +70,7 @@ The **Javascript Runtime Environment** is the outer shell ("container"), of whic
 
 Javascript and Node.js both use V8, but they have very different runtime environments: in Chrome you have the window, DOM objects etc, while node gives you require, Buffers and processes.
 
--   Explain (some) of the purposes with the tools Babel and WebPack and how they differ from each other. Use examples from the exercises.
+-   ```Explain (some) of the purposes with the tools Babel and WebPack and how they differ from each other. Use examples from the exercises.```
 
 **Babel** is a transpiler. For *older* browsers we often use polyfills for newer features that have yet to be implemented. Babel helps us by allowing us to use certain features across browsers, despite them not being available yet. Typically this is done from e.g. ES6 -> ES5, but it could also be for ESNext -> (CurrentES).
 
@@ -80,47 +80,47 @@ These tools use several dependencies and loaders that are all downloaded through
 
 ## Explain using sufficient code examples the following features in JavaScript (and node) STILL BEING WRITTEN
 
--   Variable/function-Hoisting
+-   ```Variable/function-Hoisting```
     
--   this in JavaScript and how it differs from what we know from Java/.net.
+-   ```this in JavaScript and how it differs from what we know from Java/.net.```
     
--   Function Closures and the JavaScript Module Pattern
+-   ```Function Closures and the JavaScript Module Pattern```
     
--   User-defined Callback Functions (writing your own functions that take a callback)
+-   ```User-defined Callback Functions (writing your own functions that take a callback)```
     
--   Explain the methods map, filter  and reduce
+-   ```Explain the methods map, filter  and reduce```
     
--   Provide examples of user-defined reusable modules implemented in Node.js (learnynode - 6)
+-   ```Provide examples of user-defined reusable modules implemented in Node.js (learnynode - 6)```
     
--   Provide examples and explain the es2015 features: let, arrow functions, this, rest parameters, destructuring objects and arrays, maps/sets etc.
+-   ```Provide examples and explain the es2015 features: let, arrow functions, this, rest parameters, destructuring objects and arrays, maps/sets etc.```
     
--   Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.
+-   ```Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.```
     
--   Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events
+-   ```Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events```
     
 
 ## ES6,7,8,ES-next and TypeScript
 
--   Provide examples with es-next, running in a browser, using Babel and Webpack
+-   ```Provide examples with es-next, running in a browser, using Babel and Webpack```
     
--   Explain the two strategies for improving JavaScript: Babel and ES6 (es2015) + ES-Next, versus Typescript. What does it require to use these technologies: In our backend with Node and in (many different) Browsers
+-   ```Explain the two strategies for improving JavaScript: Babel and ES6 (es2015) + ES-Next, versus Typescript. What does it require to use these technologies: In our backend with Node and in (many different) Browsers```
     
--   Provide a number of examples to demonstrate the benefits of using TypeScript, including, types, interfaces, classes and generics
+-   ```Provide a number of examples to demonstrate the benefits of using TypeScript, including, types, interfaces, classes and generics```
     
--   Explain the ECMAScript Proposal Process for how new features are added to the language (the TC39 Process)
+-   ```Explain the ECMAScript Proposal Process for how new features are added to the language (the TC39 Process)```
     
 
 ## Callbacks, Promises and async/await
 
 Explain about (ES-6) promises in JavaScript including, the problems they solve, a quick explanation of the Promise API and:
 
--   Example(s) that demonstrate how to avoid the callback hell (“Pyramid of Doom")
+-   ```Example(s) that demonstrate how to avoid the callback hell (“Pyramid of Doom")```
     
--   Example(s) that demonstrate how to execute asynchronous (promise-based) code in serial or parallel
+-   ```Example(s) that demonstrate how to execute asynchronous (promise-based) code in serial or parallel```
     
--   Example(s) that demonstrate how to implement our own promise-solutions.
+-   ```Example(s) that demonstrate how to implement our own promise-solutions.```
     
--   Example(s) that demonstrate error handling with promises
+-   ```Example(s) that demonstrate error handling with promises```
     
 
   
@@ -129,8 +129,8 @@ Explain about (ES-6) promises in JavaScript including, the problems they solve, 
 
 Provide examples to demonstrate
 
--   Why this often is the preferred way of handling promises
+-   ```Why this often is the preferred way of handling promises```
     
--   Error handling with async/await
+-   ```Error handling with async/await```
     
--   Serial or parallel execution with async/await.
+-   ```Serial or parallel execution with async/await.```
