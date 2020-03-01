@@ -1,4 +1,4 @@
-# Overview (STILL BEING WRITTEN)
+# Overview
 
 | Week |                                       Exercise                                       |
 |:----:|:------------------------------------------------------------------------------------:|
@@ -39,17 +39,46 @@ Java is through the JVM a multi-threaded language, but there are several blockin
   
 -  ```Node.js, when it “makes sense” and npm, and how it “fits” into the node ecosystem.```  
 
-Javascript was not designed to access the operating system, but with Node.js it is possible to combine the advantages of the light programming language of Javascript with the powerful engine of V8.
+Javascript was not designed to access the operating system, but with Node.js (a Javascript runtime) it is possible to combine the advantages of the light programming language of Javascript with the powerful engine of V8.  
+Node.js excels at asynchronous non-blocking operations, such as I/O. It was used to develop apps for Paypal, Linkedin, Netflix & Uber - all apps that needs to handle hundreds of thousands of users, generate their output based on input, all at the same time, connecting to different services.  
+It has great scalability and in conjunction with npm the possibilties are endless.
 
-**npm** (Node Package Manager)
+**npm** (Node Package Manager) handles packages (also "modules") of code shared between developers. Much like libraries and frameworks, utilities that are often-needed can be accessed and save valuable time, increase performance and much more. See: lodash, react, request, express, uuid.
     
 -   Explain about the Event Loop in JavaScript, including terms like: blocking, non-blocking, event loop, callback que and "other" API's. Make sure to include why this is relevant for us as developers.
+<img src="eventloop.gif" height="400" width="750">  
+
+([Video](https://youtu.be/8aGhZQkoFbQ) | [.mp4 of gif](https://i.imgur.com/QayP3Nm.mp4))  
+The stack is only occupied by the call to the other API, and can then continue until the stack is empty, then checking the task queue for the callback.
+
+Javascript is single-threaded and therefore you usually see a lot of blocking in your code.  
+The way to handle this is by delegating the blocking code to other APIs. 
+
+If the code requires a lot of work done, you can reduce the time it takes by initializing it, delegating it, and then providing it as it is ready. The alternative is to start work on one task, wait til completion, and then begin the next. The way node.js handles callbacks and asynchronous actions reduced loadtime for Netflix by 70%.
     
--   Explain the terms JavaScript Engine (name at least one) and JavaScript Runtime Environment (name at least two)
-    
+-   Explain the terms JavaScript Engine (name at least one) and JavaScript Runtime Environment (name at least two)  
+
+**Javascript Engine** is the program that executes the code. Engines started out as simple interpreters, executing code line-by-line.  
+Modern engines has Just-In-Time compilation (JIT) which compiles parts of the program where optimization can be found during runtime, opposite of compiling code before runtime. It is generally faster overall, despite a slight startup delay.  
+
+[Notable engines](https://en.wikipedia.org/wiki/JavaScript_engine#Notable_engines)  
+V8 from Google powers Chrome, Chromium-apps and Node.js.  
+SpiderMonkey from Mozilla powers Firefox.  
+Charka from Microsft was used for Edge, which now instead uses V8.
+
+The **Javascript Runtime Environment** is the outer shell ("container"), of which you typically communicate with. This is where stack, heap, garbage collector and other features reside. This is also where all the events that Javascript relies upon are handled, as well as the calls to the other APIs for concurrency are handled.
+
+Javascript and Node.js both use V8, but they have very different runtime environments: in Chrome you have the window, DOM objects etc, while node gives you require, Buffers and processes.
+
 -   Explain (some) of the purposes with the tools Babel and WebPack and how they differ from each other. Use examples from the exercises.
 
-## Explain using sufficient code examples the following features in JavaScript (and node)
+**Babel** is a transpiler. For *older* browsers we often use polyfills for newer features that have yet to be implemented. Babel helps us by allowing us to use certain features across browsers, despite them not being available yet. Typically this is done from e.g. ES6 -> ES5, but it could also be for ESNext -> (CurrentES).
+
+**Webpack** was used this semester as a bundler. It systematically looks throughout your files and bundles them into a pre-decided package, e.g. `bundle.js`. You can apply several techniques underway, such as minifying.
+
+These tools use several dependencies and loaders that are all downloaded through **npm** and then bundled together for maximum efficiency.
+
+## Explain using sufficient code examples the following features in JavaScript (and node) STILL BEING WRITTEN
 
 -   Variable/function-Hoisting
     
