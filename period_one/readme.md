@@ -277,24 +277,46 @@ Javascript uses Prototypal inheritance, which is syntactic sugar for something t
 class Foo {}
 typeof Foo // 'function'
 ```
-[Good source](https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9) | [MDN on the Prototype Chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)  | [w3S on Prototypes](https://www.w3schools.com/js/js_object_prototypes.asp)  
+[Good source](https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9) | [MDN on the Prototype Chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)  | [W3S on Prototypes](https://www.w3schools.com/js/js_object_prototypes.asp)  
 
 Every construct in Javascript is `Object`. It uses `Prototype` and `super()` to check back in the chain for any and all connections.  
 So instead of constructing copies of a Class and extending them, it actually links the classes together. [Source](https://stackoverflow.com/a/12201800)  
     
 -   ```Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events```
-    
+https://github.com/Runi-VN/JavascriptElective/tree/master/period_one/Week%202  
+(re-write, find other example? Castau has one)  
 
 ## ES6,7,8,ES-next and TypeScript
 
 -   ```Provide examples with es-next, running in a browser, using Babel and Webpack```
+We have not done this.
     
--   ```Explain the two strategies for improving JavaScript: Babel and ES6 (es2015) + ES-Next, versus Typescript. What does it require to use these technologies: In our backend with Node and in (many different) Browsers```
+-   ```Explain the two strategies for improving JavaScript: Babel and ES6 (es2015) + ES-Next, versus Typescript. What does it require to use these technologies: In our backend with Node and in (many different) Browsers```  
+
+**Babel and ES6/ES-Next** is a way to compile and transpile code. For older browsers you need *polyfills* that allow newly implemented methods to work for older browsers (in some cases). Babel allows you to write code your way and increase accessability. It also allows you to implement yet-to-be-released proposals and future additions to ecmascript.   
+
+>Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. Here are the main things Babel can do for you:  
+Transform syntax  
+Polyfill features that are missing in your target environment (through @babel/polyfill)  
+Source code transformations (codemods)  
+
+[Source](https://babeljs.io/docs/en/index.html#babel-is-a-javascript-compiler)
+
+**Typescript** is a highlayer language ontop of Javascript, a *superset*, that compiles to plain Javascript. Its purpose is to ease development. It increases the potential of Javascript by adding types and even has a built in transpiler.
     
--   ```Provide a number of examples to demonstrate the benefits of using TypeScript, including, types, interfaces, classes and generics```
+-   ```Provide a number of examples to demonstrate the benefits of using TypeScript, including, types, interfaces, classes and generics```  
+Examples: https://github.com/Runi-VN/JavascriptElective/tree/master/period_one/Week%205  
+(re-write)  
     
--   ```Explain the ECMAScript Proposal Process for how new features are added to the language (the TC39 Process)```
-    
+-   ```Explain the ECMAScript Proposal Process for how new features are added to the language (the TC39 Process)```  
+
+https://medium.com/free-code-camp/ecmascript-tc39-and-the-history-of-javascript-26067498feb9  
+Stage 0: Strawperson — to allow input into specifications  
+Stage 1: Proposal — make the case for the addition, describe the solution and identify the potential challenges  
+Stage 2: Draft — describe the syntax and semantics using formal spec language  
+Stage 3: Candidate — states that further refinement will need feedback from implementations and users  
+Stage 4: Finished — states that the addition is ready for inclusion in the formal ECMAScript standard  
+[Source](https://medium.com/swlh/understanding-tc39-process-and-stage-3-specifications-f0b6914d5d24)  
 
 ## Callbacks, Promises and async/await
 
