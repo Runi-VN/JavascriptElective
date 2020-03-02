@@ -288,7 +288,7 @@ https://github.com/Runi-VN/JavascriptElective/tree/master/period_one/Week%202
 
 ## ES6,7,8,ES-next and TypeScript
 
--   ```Provide examples with es-next, running in a browser, using Babel and Webpack```
+-   ```Provide examples with es-next, running in a browser, using Babel and Webpack```  
 We have not done this.
     
 -   ```Explain the two strategies for improving JavaScript: Babel and ES6 (es2015) + ES-Next, versus Typescript. What does it require to use these technologies: In our backend with Node and in (many different) Browsers```  
@@ -322,23 +322,202 @@ Stage 4: Finished — states that the addition is ready for inclusion in the for
 
 Explain about (ES-6) promises in JavaScript including, the problems they solve, a quick explanation of the Promise API and:
 
--   ```Example(s) that demonstrate how to avoid the callback hell (“Pyramid of Doom")```
-    
--   ```Example(s) that demonstrate how to execute asynchronous (promise-based) code in serial or parallel```
-    
--   ```Example(s) that demonstrate how to implement our own promise-solutions.```
-    
--   ```Example(s) that demonstrate error handling with promises```
-    
+From [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) on `Promise`:  
+>A Promise is a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a promise to supply the value at some point in the future.
 
-  
+>A Promise is in one of these states:
+
+>pending: initial state, neither fulfilled nor rejected.  
+fulfilled: meaning that the operation completed successfully.  
+rejected: meaning that the operation failed.  
+
+![](https://media.prod.mdn.mozit.cloud/attachments/2018/04/18/15911/32e79f722e83940fdaea297acdb5df92/promises.png)  
+
+-   ```Example(s) that demonstrate how to avoid the callback hell (“Pyramid of Doom")```  
+
+Example of callback hell: https://github.com/Runi-VN/JavascriptElective/blob/master/period_one/Week%203/Exercise1.js  
+
+```js
+function getPlanetforFirstSpeciesInFirstMovieForPerson(id) {
+  let person = {};
+  fetch("https://swapi.co/api/people/" + id)
+    .then(res => res.json())
+    .then(data => {
+      //Luke all data
+      person.name = data.name;
+      return data.films[0]; //get first film entry
+    })
+    .then(film_url => fetch(film_url))
+    .then(res => res.json())
+    .then(data => {
+      //Movie all data
+      person["First film"] = data.title;
+      return data.species[0]; //get first specie entry
+    })
+    .catch(err => console.log("Error: ", err))
+    .finally(() =>
+      console.log("Promises Done, data:\n", JSON.stringify(person, null, "\t"))
+    );
+}
+```  
+[Source + Async/Await edt.](https://github.com/Runi-VN/JavascriptElective/blob/master/period_one/Week%203/Exercise2.js)  
+**(re-write, OTHER?)**  
+    
+-   ```Example(s) that demonstrate how to execute asynchronous (promise-based) code in serial or parallel```  
+https://github.com/Runi-VN/JavascriptElective/blob/master/period_one/Week%203/Exercise3.js  
+(re-write)  
+
+**Also Promise.all** https://github.com/Runi-VN/JavascriptElective/blob/master/period_one/Week%203/Exercise1.js#L86  
+    
+-   ```Example(s) that demonstrate how to implement our own promise-solutions.```  
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises  
+
+```js
+function getData() {
+    return new Promise((resolve, reject)=>{
+        request( `http://www.omdbapi.com/?t=The+Matrix`, (error, res, movieData)=>{
+            if (error) reject(error);
+            else resolve(movieData);
+        });
+    });
+}
+
+getData()
+    .then(data => console.log(data))
+    .catch(error => console.log(error));
+```  
+[Source](https://scotch.io/@wesleylhandy/writing-your-own-javascript-promises)  
+
+-   ```Example(s) that demonstrate error handling with promises```  
+1 catch for all causes is typical for promises, where with callbacks you'd have to catch every time:  
+
+```js
+try {
+  //Operations
+  ...
+} catch (err) {
+//handle err
+}
+
+```
 
 ## Explain about JavaScripts async/await, how it relates to promises and reasons to use it compared to the plain promise API.
 
-Provide examples to demonstrate
+Callbacks -> Promises -> Async/Await (Syntactic Sugar)  
+Non-blocking for asynchronous methods  
+Async/Await is for the developers benefit - making asynchronous code easier to read and handle. Makes it comparable to synchronous code.  
+https://stackoverflow.com/questions/14455293/how-and-when-to-use-async-and-await
 
--   ```Why this often is the preferred way of handling promises```
+```js
+// Plain promise
+const makeRequest = () =>
+  getJSON()
+    .then(data => {
+      console.log(data)
+      return true
+    })
+makeRequest()
+
+// async/await
+const makeRequest = async () => {
+  console.log(await getJSON())
+  return true
+}
+makeRequest()
+```  
+
+**Provide examples to demonstrate:**
+
+-   ```Why this often is the preferred way of handling promises```  
+From [here](https://blog.pusher.com/promises-async-await/) ("Why bother?"):  
+Error handling (A single `catch`)  
+Conditionals (Easier handling of given/received values)  
+Chaining (Rather than `.then` everywhere, we `await`-chain)  
+Error reporting done by Promises are less verbose/"correct" than async/await  
+Lower Memory Requirements (more stacktraces, details are saved by Promises compared to async/await)  
+Clear, concise syntax (Avoid nesting, `.then`, useless named variables, take advantage of anonymous functions)  
+
+```js
+// With plain promise
+const makeRequest = () => {
+    try {
+        getJSON()
+        .then(result => {
+            const data = JSON.parse(result)
+            //Handle data, maybe another .then
+        })
+        .catch((err) => {
+            //Handle inner error
+        })
+    } catch (err) {
+        //Handle outer error
+    }
+}
+
+// With async/await
+const makeRequest = async () => {
+    try {
+        const data = JSON.parse(await getJSON())
+        //Handle data, maybe another await
+    } catch (err) {
+        //Handle single error
+    }
+}
+```
+-   ```Error handling with async/await```  
+```js
+// Plain promises
+  const makeRequest = () => {
+      return callAPromise()
+      .then(() => callAPromise())
+      .then(() => callAPromise())
+      .then(() => callAPromise())
+      .then(() => callAPromise())
+      .then(() => {
+          throw new Error("oops");
+      })
+  }
+
+  makeRequest()
+      .catch(err => {
+          console.log(err);
+          // output
+          // Error: oops at callAPromise.then.then.then.then.then (index.js:8:13)
+      })
+
+  // async/await
+  const makeRequest = async () => {
+      await callAPromise()
+      await callAPromise()
+      await callAPromise()
+      await callAPromise()
+      await callAPromise()
+      throw new Error("oops");
+  }
+
+  makeRequest()
+  .catch(err => {
+      console.log(err);
+      // output
+      // Error: oops at makeRequest (index.js:7:9)
+  })
+```  
     
--   ```Error handling with async/await```
-    
--   ```Serial or parallel execution with async/await.```
+-   ```Serial or parallel execution with async/await.```  
+```js
+  // serial
+  const makeRequest = async () => {
+      const value1 = await promise1()
+      const value2 = await promise2(value1)
+      return promise3(value1, value2)
+  }
+
+  //parallel
+  async function printNamesParallel() {
+      const promise1 = fetchPerson(URL + '1');
+      const promise2 = fetchPerson(URL + '2');
+      (await Promise.all([promise1, promise2])).forEach(result => {
+          console.log(result.name);
+      });
+  }
+```
