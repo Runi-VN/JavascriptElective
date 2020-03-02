@@ -129,7 +129,7 @@ var Module = (function () {
 })();
 ```  
 
-We would access it by using the IIFE (Ensure function is executed imemediately and variables are only within scope), either `Module.someMethod();` or `Module.anotherMethod();` but could not access *privateMethod*.
+We would access it by using the IIFE (Ensure function is executed immediately and variables are only within scope), either `Module.someMethod();` or `Module.anotherMethod();` but could not access *privateMethod*.
     
 -   ```User-defined Callback Functions (writing your own functions that take a callback)```  
 There are several uses for callbacks.  
@@ -170,7 +170,7 @@ const result = testData.map(element => element * 2);
 console.log(result); //[4, 8, 12, 16]
 ```  
 
-In the example we take the power of two to every element.
+In the example we multiply every element by 2.
 
 `Filter()` creates a new array with the elements of the original array that passes a test.  
 ```js
@@ -242,7 +242,7 @@ const subtract = (val1, val2) => val1 - val2 ;
 
 **[rest parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)** are a way to pass multiple parameters to a function. The same syntax, `...`, is used in Java and in Python we use `*` or `**`.
 
-**destructuring data structures** is a easy, short way to unpack collection properties into variables. It is something we often see in React.js.
+**destructuring data structures** is an easy, short way to unpack collection properties into variables. It is something we often see in React.js.
 
 Examples:  
 ```js
@@ -267,7 +267,20 @@ sayHello({ name: 'John', surname: 'Smith' }) // Hello John Smith! How are you?
 [Source](https://www.jstips.co/en/javascript/use-destructuring-in-function-parameters/)
 
 -   ```Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.```  
+https://github.com/Runi-VN/JavascriptElective/blob/master/period_one/Week%205/src/ex4_classes_inheritance.ts  
+(re-write, mention that ToString() could be overwritten)
 
+Java uses Class Inheritance, and while it might seem that Javascript does the same, it does not.  
+Javascript uses Prototypal inheritance, which is syntactic sugar for something that reminds you of OOP Class Inheritance:
+
+```js
+class Foo {}
+typeof Foo // 'function'
+```
+[Good source](https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9) | [MDN on the Prototype Chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)  | [w3S on Prototypes](https://www.w3schools.com/js/js_object_prototypes.asp)  
+
+Every construct in Javascript is `Object`. It uses `Prototype` and `super()` to check back in the chain for any and all connections.  
+So instead of constructing copies of a Class and extending them, it actually links the classes together. [Source](https://stackoverflow.com/a/12201800)  
     
 -   ```Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events```
     
