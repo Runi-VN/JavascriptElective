@@ -78,7 +78,7 @@ Javascript and Node.js both use V8, but they have very different runtime environ
 
 These tools use several dependencies and loaders that are all downloaded through **npm** and then bundled together for maximum efficiency.
 
-## Explain using sufficient code examples the following features in JavaScript (and node) STILL BEING WRITTEN
+## Explain using sufficient code examples the following features in JavaScript (and node)  
 
 -   ```Variable/function-Hoisting```  
 https://developer.mozilla.org/en-US/docs/Glossary/Hoisting  
@@ -198,19 +198,76 @@ https://github.com/Runi-VN/JavascriptElective/tree/master/period_one/ClassExerci
 (Re-write)  
 -   ```Provide examples and explain the es2015 features: let, arrow functions, this, rest parameters, destructuring objects and arrays, maps/sets etc.```
 
-**`let`** is block scoped:
+Variables declared by `var` keyword are scoped to the immediate function body (hence the function scope) while **`let`** and `const` variables are scoped to the immediate enclosing block denoted by { }. ([Source](https://stackoverflow.com/a/11444416))  
 
-**arrow functions** are...
+Examples:  
+```js
+{
+	var x = 1;
+	let y = 1;
+	const z = 1;
+}
+console.log(x); // 1
+console.log(y); // undefined because 'y' has block scope
+console.log(z); // undefined because 'z' has block scope
 
-**`this`** is...
+...
 
-**rest parameters** are...
+for (var i = 0; i < 5; ++i) {}
+console.log(i); // 5 - defined to the outside scope (note this is outside the loop!)
 
-**destructuring data structures**  is...
+for (let j = 0; j < 5; ++j) {}
+console.log(j); // undefined (note this is outside the loop!)
+```
 
 
+**arrow functions** are a new way in ES6 to write functions significantly shorter than previously.  
+In regards to `this` in arrow functions it differs a bit:  
+*In regular functions the `this` keyword represented the object that called the function, which could be the window, the document, a button or whatever.*
 
--   ```Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.```
+*With arrow functions the `this` keyword always represents the object that defined the arrow function.* (Which is very often the window/global object)  
+([Source, Examples](https://www.w3schools.com/js/js_arrow_function.asp)) | [More on Lexical Scoping](https://www.freecodecamp.org/news/learn-es6-the-dope-way-part-ii-arrow-functions-and-the-this-keyword-381ac7a32881/)
+
+Examples:  
+```js
+// ES5
+var subtract = function(val1, val2) {
+  return val1 - val2;
+};
+// ES6
+const subtract = (val1, val2) => val1 - val2 ;
+```
+
+**`this`** is discussed above.
+
+**[rest parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)** are a way to pass multiple parameters to a function. The same syntax, `...`, is used in Java and in Python we use `*` or `**`.
+
+**destructuring data structures** is a easy, short way to unpack collection properties into variables. It is something we often see in React.js.
+
+Examples:  
+```js
+
+var someArray = [1, 2, 3];
+
+//destructuring an array
+var [first, second, third] = someArray; //first, second, third is now someArray[0], someArray[1] and someArray[2]
+
+//destructuring an object
+var { foo, bar } = { foo: "lorem", bar: "ipsum" };
+
+//Destructuring other collections are particular useful when they have the same name
+
+//Using destructuring for function parameters
+var sayHello = function({ name, surname }) {
+  console.log(`Hello ${name} ${surname}! How are you?`);
+};
+
+sayHello({ name: 'John', surname: 'Smith' }) // Hello John Smith! How are you?
+```
+[Source](https://www.jstips.co/en/javascript/use-destructuring-in-function-parameters/)
+
+-   ```Provide an example of ES6 inheritance and reflect over the differences between Inheritance in Java and in ES6.```  
+
     
 -   ```Explain and demonstrate, how to implement your own events, how to emit events and how to listen for such events```
     
