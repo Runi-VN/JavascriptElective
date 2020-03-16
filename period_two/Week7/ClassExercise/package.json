@@ -1,0 +1,19 @@
+{
+	"name": "ClassExercise",
+	"version": "1.0.0",
+	"description": "Specifically: https://semaphoreci.com/community/tutorials/getting-started-with-node-js-and-mocha",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha --reporter spec"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"chai": "^4.2.0"
+	},
+	"dependencies": {
+		"express": "^4.17.1",
+		"request": "^2.88.2"
+	}
+}
