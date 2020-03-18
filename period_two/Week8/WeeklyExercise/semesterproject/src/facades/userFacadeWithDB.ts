@@ -12,14 +12,14 @@ export default class UserFacade {
 
     static async setDatabase(client: mongo.MongoClient) {
         const dbName = process.env.DB_NAME;
-        if(!dbName){
+        if (!dbName) {
             throw new Error("Database name not provided")
         }
         try {
-            if(!client.isConnected()){
-              await client.connect();
+            if (!client.isConnected()) {
+                await client.connect();
             }
-            userCollection =  client.db(dbName).collection("users");
+            userCollection = client.db(dbName).collection("users");
             return client.db(dbName);
 
         } catch (err) {
@@ -34,24 +34,35 @@ export default class UserFacade {
         return "User was added";
     }
     static async deleteUser(userName: string): Promise<string> {
-        throw new Error("Not Implemented")
+        const status = await userCollection.findOneAndDelete({ userName })
+        if (!status.value) {
+            throw new ApiError('Could not delete user', 404)
+        }
+        return 'User was deleted'
     }
     //static async getAllUsers(): Promise<Array<IGameUser>> {
     static async getAllUsers(): Promise<Array<any>> {
-        throw new Error("Not Implemented")
+        return userCollection.find(
+            {}, { projection: { name: 1, userName: 1, _id: 0 } }).toArray()
+        //, { projection: { password: 0 } }
     }
 
-    static async getUser(userName: string,proj?:object): Promise<any> {
-        throw new Error("Not Implemented")
+    static async getUser(userName: string, proj?: object): Promise<any> {
+        const user = await userCollection.findOne(
+            { userName },
+            { projection: proj })
+        if (!user) {
+            throw new ApiError("User not found", 404)
+        }
+        return user
     }
 
     static async checkUser(userName: string, password: string): Promise<boolean> {
         let userPassword = "";
-        try{
-          const user = await UserFacade.getUser(userName);
-          userPassword = user.password;
-        } catch(err){}
-        
+        try {
+            const user = await UserFacade.getUser(userName);
+            userPassword = user.password;
+        } catch (err) { }
         const status = await bryptCheckAsync(password, userPassword);
         return status
     }
@@ -64,42 +75,42 @@ async function test() {
     await userCollection.deleteMany({})
     await UserFacade.addUser({ name: "kim", userName: "kim@b.dk", password: "secret", role: "user" })
     await UserFacade.addUser({ name: "ole", userName: "ole@b.dk", password: "secret", role: "user" })
-    
-    // const all = await UserFacade.getAllUsers();
-    // console.log(all)
 
-    // const projection = {projection:{_id:0, role:0,password:0}}
-    // const kim = await UserFacade.getUser("kim@b.dk",projection)
-    // console.log(kim)
+    const all = await UserFacade.getAllUsers();
+    console.log(all)
 
-    // try {
-    //     let status = await UserFacade.deleteUser("kim@b.dk");
-    //     console.log(status)
-    //     status = await UserFacade.deleteUser("xxxx@b.dk");
-    //     console.log("Should not get here")
-    // } catch (err) {
-    //     console.log(err.message)
-    // }
+    const projection = { _id: 0, role: 0, password: 0 }
+    const kim = await UserFacade.getUser("kim@b.dk", projection)
+    console.log(kim)
 
-    // try {
-    //     const passwordStatus = await UserFacade.checkUser("kim@b.dk", "secret");
-    //     console.log("Expects true: ", passwordStatus)
-    // } catch (err) {
-    //     console.log("Should not get here 1", err)
-    // }
-    // try {
-    //     const passwordStatus = await UserFacade.checkUser("kim@b.dk", "xxxx");
-    //     console.log("Should not get here ", passwordStatus)
-    // } catch (err) {
-    //     console.log("Should get here with failded 2", err)
-    // }
-    // try {
-    //     const passwordStatus = await UserFacade.checkUser("xxxx@b.dk", "secret");
-    //     console.log("Should not get here")
-    // } catch (err) {
-    //     console.log("hould get here with failded 2", err)
-    // }
+    try {
+        const passwordStatus = await UserFacade.checkUser("kim@b.dk", "secret");
+        console.log("Expects true: ", passwordStatus)
+    } catch (err) {
+        console.log("Should not get here 1", err)
+    }
+    try {
+        const passwordStatus = await UserFacade.checkUser("kim@b.dk", "xxxx");
+        console.log("Should not get here ", passwordStatus)
+    } catch (err) {
+        console.log("Should get here with failded 2", err)
+    }
+    try {
+        const passwordStatus = await UserFacade.checkUser("xxxx@b.dk", "secret");
+        console.log("Should not get here")
+    } catch (err) {
+        console.log("hould get here with failded 2", err)
+    }
+    //must delete at last or else above tests dont work m8
+    try {
+        let status = await UserFacade.deleteUser("kim@b.dk");
+        console.log(status)
+        status = await UserFacade.deleteUser("xxxx@b.dk");
+        console.log("Should not get here")
+    } catch (err) {
+        console.log(err.message)
+    }
 
-    
+    client.close()
 }
-test();
+//test();

@@ -9,7 +9,7 @@ import setup from "../../config/setupDB"
 const MongoClient = mongo.MongoClient;
 
 
-const USE_AUTHENTICATION = false;
+const USE_AUTHENTICATION = true;
 
 (async function setupDB() {
     const client = await setup()
