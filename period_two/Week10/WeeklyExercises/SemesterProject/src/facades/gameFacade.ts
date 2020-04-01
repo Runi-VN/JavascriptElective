@@ -17,6 +17,7 @@ const EXPIRES_AFTER = 30;
 export default class GameFacade {
 
   static readonly DIST_TO_CENTER = 15
+  static readonly POST_DISTANCE = 10 //distance to be within range of post in meters
 
   static async setDatabase(client: mongo.MongoClient) {
     const dbName = process.env.DB_NAME;
@@ -38,10 +39,10 @@ export default class GameFacade {
       await positionCollection.createIndex({ location: '2dsphere' })
 
 
-      //TODO uncomment if you plan to do this part of the exercise
-      //postCollection = client.db(dbName).collection(POST_COLLECTION_NAME);
-      //TODO If you do this part, create 2dsphere index on location
-      //await postCollection.createIndex({ location: "2dsphere" })
+      // uncomment if you plan to do this part of the exercise
+      postCollection = client.db(dbName).collection(POST_COLLECTION_NAME);
+      // If you do this part, create 2dsphere index on location
+      await postCollection.createIndex({ location: "2dsphere" })
       return client.db(dbName);
 
     } catch (err) {
@@ -81,13 +82,13 @@ export default class GameFacade {
       )
 
 
-      /* TODO 
+      /* 
          By know we have updated (or created) the callers position-document
-         Next step is to see if we can find any nearby players, friends or whatever you call them
+         Next step is to see if we can find any nearby players, 
          */
       const nearbyPlayers = await GameFacade.findNearbyPlayers(userName, point, distance);
       //if (nearbyPlayers.length == 0) return nearbyPlayers
-      //If anyone found,  format acording to requirements
+      //If anyone found, format acording to requirements
       const formatted = nearbyPlayers.map((player) => {
         return {
           // Complete this, using the requirements
@@ -130,8 +131,10 @@ export default class GameFacade {
           _id: postId,
           location:
           {
-            $near: {}
-            // Todo: Complete this
+            $near: {
+              $geometry: { type: 'Point', coordinates: [lat, lon] },
+              $maxDistance: this.POST_DISTANCE
+            }
           }
         }
       )
@@ -142,7 +145,6 @@ export default class GameFacade {
     } catch (err) {
       throw err;
     }
-
   }
 
   //You can use this if you like, to add new post's via the facade

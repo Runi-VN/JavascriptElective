@@ -8,6 +8,7 @@ import { bryptAsync } from "../src/utils/bcrypt-async-helper"
 import { positionCreator, getLatitudeOutside, getLatitudeInside } from "../src/utils/geoUtils"
 import { USER_COLLECTION_NAME, POSITION_COLLECTION_NAME, POST_COLLECTION_NAME } from "../src/config/collectionNames"
 import { ApiError } from '../src/errors/apiError';
+import IPost from "../src/interfaces/Post";
 
 let userCollection: mongo.Collection | null;
 let positionCollection: mongo.Collection | null;
@@ -53,15 +54,15 @@ describe("Verify the GameFacade", () => {
 
     const positions = [
       positionCreator(12.48, 55.77, team1.userName, team1.name, true),
-      //TODO --> Change latitude below, to a value INSIDE the radius given by DISTANCE_TO_SEARC, and the position of team1
+      // --> Change latitude below, to a value INSIDE the radius given by DISTANCE_TO_SEARC, and the position of team1
       positionCreator(12.48, getLatitudeInside(55.77, DISTANCE_TO_SEARCH), team2.userName, team2.name, true),
-      //TODO --> Change latitude below, to a value OUTSIDE the radius given by DISTANCE_TO_SEARC, and the position of team1
+      // --> Change latitude below, to a value OUTSIDE the radius given by DISTANCE_TO_SEARC, and the position of team1
       positionCreator(12.48, getLatitudeOutside(55.77, DISTANCE_TO_SEARCH), team3.userName, team3.name, true),
     ]
     await positionCollection.insertMany(positions)
 
     //Only include this if you plan to do this part 
-    /*await postCollection.deleteMany({})
+    await postCollection.deleteMany({})
     await postCollection.insertOne({
       _id: "Post1",
       task: { text: "1+1", isUrl: false },
@@ -70,7 +71,7 @@ describe("Verify the GameFacade", () => {
         type: "Point",
         coordinates: [12.49, 55.77]
       }
-    });*/
+    });
 
   })
 
@@ -88,26 +89,49 @@ describe("Verify the GameFacade", () => {
         const playersFound = await GameFacade.nearbyPlayers("t1", "xxxxx", 12.48, 55.77, DISTANCE_TO_SEARCH)
         throw new Error("Should NEVER get here")
       } catch (err) {
+        expect(err instanceof ApiError).to.be.equal(true)
         expect(err.errorCode).to.be.equal(403)
         expect(err.message).to.be.equal('wrong username or password')
       }
-
     })
   })
 
   describe("Verify nearbyPlayers", () => {
-    xit("Should find Team2 and Team2", async () => {
-      //TODO
+    it("Should find Team2 and Team3?", async () => {
+      const expected: any | null = await userCollection!.find!({ name: ['Team2', 'Team3'] }).toArray() //real nice.................
+      //[{ userName: "t2", password: 'secret', role: "team" }, { name: "Team3", userName: "t3", password: 'secret', role: "team" }]
+
+      const playersFound = await GameFacade.nearbyPlayers("t1", "secret", 12.48, 55.77, DISTANCE_TO_SEARCH * 2) //big enough to find both teams
+      expect(playersFound.length).to.be.equal(2);
+      expect(playersFound).to.include.members(expected)
+    })
+  })
+
+  describe("Verify nearbyPlayers", () => {
+    it("Should find no players within range", async () => {
+      const playersFound = await GameFacade.nearbyPlayers("t1", "secret", 1, 1, DISTANCE_TO_SEARCH) //no players within range of this coordinate.
+      expect(playersFound.length).to.be.equal(0)
+      expect(playersFound[0]).to.be.equal(undefined)
     })
   })
 
   describe("Verify getPostIfReached", () => {
-    xit("Should find the post since it was reached", async () => {
-      //TODO
+    it("Should find the post since it was reached", async () => {
+      const expected = { postId: 'Post1', task: '1+1', isUrl: false }
+      const post: IPost = await GameFacade.getPostIfReached('Post1', 12.49, 55.77) //Right ontop of the post
+      expect(post).to.be.not.null
+      expect(post).to.be.deep.equal(expected)
     })
 
-    xit("Should NOT find the post since it was NOT reached", async () => {
-      //TODO
+    it("Should NOT find the post since it was NOT reached", async () => {
+      try {
+        const result = await GameFacade.getPostIfReached('Post1', 1, 1) //Coordinates too far away
+        throw new Error("Should NEVER get here")
+      } catch (err) {
+        expect(err instanceof ApiError).to.be.equal(true)
+        expect(err.errorCode).to.be.equal(400)
+        expect(err.message).to.be.equal('Post not reached')
+      }
     })
   })
 })

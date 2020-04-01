@@ -8,7 +8,7 @@ import mongo, { MongoClient } from "mongodb";
 import { bryptAsync } from "../src/utils/bcrypt-async-helper"
 import setup from "../src/config/setupDB"
 import { positionCreator, getLatitudeInside, getLatitudeOutside } from "../src/utils/geoUtils"
-import { USER_COLLECTION_NAME, POSITION_COLLECTION_NAME } from "../src/config/collectionNames"
+import { USER_COLLECTION_NAME, POSITION_COLLECTION_NAME, POST_COLLECTION_NAME } from "../src/config/collectionNames"
 
 let server: Server;
 const TEST_PORT = "7777"
@@ -62,6 +62,18 @@ describe("Verify /gameapi/getPostIfReached", () => {
       positionCreator(12.48, getLatitudeOutside(55.77, DISTANCE_TO_SEARCH), team3.userName, team3.name, true)
     ]
     const locations = await positionsCollection.insertMany(positions)
+
+    const postCollection = db.collection(POST_COLLECTION_NAME)
+    await postCollection.deleteMany({})
+    await postCollection.insertOne({
+      _id: "Post1",
+      task: { text: "1+1", isUrl: false },
+      taskSolution: "2",
+      location: {
+        type: "Point",
+        coordinates: [12.49, 55.77]
+      }
+    });
   })
 
   after(async () => {
@@ -134,8 +146,38 @@ describe("Verify /gameapi/getPostIfReached", () => {
     expect(result.message).to.be.equal('wrong username or password')
   })
 
-  xit("Should .....", async () => {
+  it("Should find nearby post (In range)", async () => {
+    const expected = { postId: 'Post1', task: '1+1', isUrl: false }
+    const post_request_position = { "postId": "Post1", "lat": 12.49, "lon": 55.77 } //would have come from a player
+    //post coordinates are [12.49, 55.77] -- we are ontop of it
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post_request_position)
+    }
+    const result = await fetch(`${URL}/gameapi/getPostIfReached`, config).then(r => r.json());
+    expect(result).to.be.not.null
+    expect(result).to.be.deep.equal(expected)
   })
 
+  it("Should not find nearby post (Out of range)", async () => {
+    const expected = { code: 400, message: "Post not reached" }
+    const post_request_position = { "postId": "Post1", "lat": 1, "lon": 1 } //would have come from a player
+    //post coordinates are [12.49, 55.77] -- we are FAR away from it
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post_request_position)
+    }
+    const result = await fetch(`${URL}/gameapi/getPostIfReached`, config).then(r => r.json());
+    expect(result).to.be.not.null
+    expect(result).to.be.deep.equal(expected)
+  })
 
 })

@@ -30,7 +30,17 @@ router.post('/nearbyplayers', async function (req, res, next) {
 
 })
 router.post('/getPostIfReached', async function (req, res, next) {
-  throw new Error("Not yet implemented")
+  try {
+    const id = req.body.postId
+    const lat = req.body.lat
+    const lon = req.body.lon
+    const result = await gameFacade.getPostIfReached(id, lat, lon)
+    //{"postId":"post1", "task": "2+5", isUrl:false}
+    //const dto = {postId: result.postId, } //is already DTO
+    res.json(result)
+  } catch (err) {
+    next(err)
+  }
 })
 
 module.exports = router;

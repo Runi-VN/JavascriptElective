@@ -32,5 +32,5 @@ function positionCreator(lon: number, lat: number, userName: string, name: strin
   return position;
 }
 
-export {getLatitudeInside,getLatitudeOutside,positionCreator}
+export { getLatitudeInside, getLatitudeOutside, positionCreator }
 

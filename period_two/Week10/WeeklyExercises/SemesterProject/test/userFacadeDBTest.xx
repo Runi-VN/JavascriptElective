@@ -7,7 +7,7 @@ import { bryptAsync } from "../src/utils/bcrypt-async-helper"
 import { ApiError } from '../src/errors/apiError';
 
 let userCollection: mongo.Collection | null;
-let client:mongo.MongoClient;
+let client: mongo.MongoClient;
 
 // function checkCollection(collection: mongo.Collection) {
 //   if (collection === null) {
