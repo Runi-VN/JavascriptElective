@@ -9,6 +9,7 @@ import { positionCreator, getLatitudeOutside, getLatitudeInside } from "../src/u
 import { USER_COLLECTION_NAME, POSITION_COLLECTION_NAME, POST_COLLECTION_NAME } from "../src/config/collectionNames"
 import { ApiError } from '../src/errors/apiError';
 import IPost from "../src/interfaces/Post";
+const debug = require('debug')('game-project')
 
 let userCollection: mongo.Collection | null;
 let positionCollection: mongo.Collection | null;
@@ -132,6 +133,24 @@ describe("Verify the GameFacade", () => {
         expect(err.errorCode).to.be.equal(400)
         expect(err.message).to.be.equal('Post not reached')
       }
+    })
+  })
+
+  describe("Verify addPost", () => {
+    it("Should add a post", async () => {
+      //const position = positionCreator(2, 2, 't1', 'Team1', true)
+      const expected: Array<IPost> = [{ _id: 'Post7', location: { type: 'Point', coordinates: [5, 5] }, task: { text: 'What is the meaning of life?', isUrl: false }, taskSolution: '42' }]
+      const pre_action_db_size: number | undefined = await postCollection?.countDocuments({})
+      const result = await GameFacade.addPost('Post7', 'What is the meaning of life?', false, '42', 5, 5)
+      const post_action_db_size: number | undefined = await postCollection?.countDocuments({})
+
+      //debug(result)
+      //debug('here', result.location.coordinates)
+      //debug(expected)
+      //debug(pre_action_db_size)
+      //debug(post_action_db_size)
+      expect(result).to.be.deep.equal(expected)
+      expect(pre_action_db_size! + 1).to.be.equal(post_action_db_size) //was 1 (see beforeEach), now 2
     })
   })
 })

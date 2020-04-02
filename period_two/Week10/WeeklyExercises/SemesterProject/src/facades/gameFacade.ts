@@ -151,15 +151,16 @@ export default class GameFacade {
   static async addPost(
     name: string,
     taskTxt: string,
-    isURL: boolean,
+    isUrl: boolean,
     taskSolution: string,
     lon: number,
     lat: number
   ): Promise<IPost> {
+    //could do type check with JOI
     const position = { type: "Point", coordinates: [lon, lat] };
     const status = await postCollection.insertOne({
       _id: name,
-      task: { text: taskTxt, isURL },
+      task: { text: taskTxt, isUrl },
       taskSolution,
       location: {
         type: "Point",

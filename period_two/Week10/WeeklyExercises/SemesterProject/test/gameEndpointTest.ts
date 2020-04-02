@@ -180,4 +180,34 @@ describe("Verify /gameapi/getPostIfReached", () => {
     expect(result).to.be.deep.equal(expected)
   })
 
+  it("Should add a new post", async () => {
+    const expected = [
+      {
+        _id: 'Post8',
+        task: { text: 'Who am I', isUrl: false },
+        taskSolution: 'The developer',
+        location: { type: 'Point', coordinates: [15, 15] }
+      }
+    ]
+    // const name = req.body.name
+    // const task = req.body.task
+    // const isUrl = req.body.isUrl
+    // const taskSolution = req.body.taskSolution
+    // const lon = req.body.lon
+    // const lat = req.body.lat
+    const post_to_add = { name: 'Post8', task: 'Who am I', isUrl: false, taskSolution: 'The developer', lon: 15, lat: 15 }
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post_to_add)
+    }
+    const result = await fetch(`${URL}/gameapi/addPost`, config).then(r => r.json());
+    console.log(result);
+    expect(result).to.be.not.null
+    expect(result).to.be.deep.equal(expected)
+  })
+
 })

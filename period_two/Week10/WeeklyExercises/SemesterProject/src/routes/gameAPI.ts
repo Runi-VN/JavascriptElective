@@ -43,4 +43,21 @@ router.post('/getPostIfReached', async function (req, res, next) {
   }
 })
 
+router.post('/addPost', async (req, res, next) => {
+  try {
+
+    const name = req.body.name
+    const task = req.body.task
+    const isUrl = req.body.isUrl
+    const taskSolution = req.body.taskSolution
+    const lon = req.body.lon
+    const lat = req.body.lat
+    const result = await gameFacade.addPost(name, task, isUrl, taskSolution, lon, lat)
+
+    res.json(result)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router;

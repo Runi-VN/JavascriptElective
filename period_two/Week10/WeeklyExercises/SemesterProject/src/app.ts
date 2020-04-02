@@ -10,7 +10,7 @@ const app = express();
 app.use(express.static(path.join(process.cwd(), "public")))
 
 app.use("/", (req, res, next) => {
-  console.log('app.ts is logging requsts:', req.url)
+  console.log('app.ts is logging requests:', req.url)
   next()
 })
 app.use(express.json())
