@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-client",
-    "slug": "react-native-client",
+    "name": "react-native-client-week12",
+    "slug": "react-native-client-week12",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +23,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Turn in teamfinder app for w12\nFind nearby teams with username, password, radius"
   }
 }
